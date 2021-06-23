@@ -1,28 +1,49 @@
-var n1,n2;
-var b1,b2;
-var v1,v2
+var trex, trex_running, edges;
+var groundImage,ground;
 
+function preload(){
+  trex_running = loadAnimation("trex1.png","trex3.png","trex4.png");
+  groundImage = loadImage("ground2.png")
+  
+}
 
-
-
-function setup() {
-  createCanvas(400, 400);
-n1 = createInput().attribute("placeholder","Enter the First Number")
-n1.position(5,60)
-n2 = createInput().attribute("placeholder","Enter the Second Number")
-n2.position(200,60)
-b1 = createButton("add")
-b1.position(10,200)
-b1.mousePressed(add)
+function setup(){
+  createCanvas(600,200);
+  
+  // creating trex
+  ground = createSprite(300,180,600,30)
+  ground.x = ground.width/2
+  ground.velocityX = -5
+  ground.addImage(groundImage)
+  trex = createSprite(50,160,20,50);
+  trex.addAnimation("running", trex_running);
+  
+  
+  
+  //adding scale and position to trex
+  trex.scale = 0.5;
+  trex.x = 50
 }
 
 
-function draw() {
-  background(10);
-  v1 = parseInt(n1.value())
-  v2 = parseInt(n2.value())
-}
+function draw(){
+  //set background color 
+  background(180);
+  
+  //logging the y position of the trex
+  console.log(trex.y)
+  
+  //jump when space key is pressed
+  if(keyDown("space")){
+    trex.velocityY = -10;
+  }
+  
+  trex.velocityY = trex.velocityY + 0.5;
+  if(ground.x < 0){
+    ground.x = ground.width/2
 
-function add() { 
-console.log(v1+v2)
+  }
+  //stop trex from falling down
+  trex.collide(ground)
+  drawSprites();
 }
